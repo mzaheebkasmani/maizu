@@ -8,10 +8,11 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
+    color-scheme: light;
 }
 
 .heading-font {
-    font-family: 'Pacifico', cursive; 
+    font-family: 'Pacifico', cursive;
 }
 
 /* Screen Layouts */
