@@ -2,221 +2,345 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Browser ko zabardasti Light Mode aur Pink Theme par rakhne ke liye -->
     <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#ff758c">
+    
     <title>Happy Birthday Surprise!</title>
     
-    <!-- Google Fonts for Premium Look -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Pacifico&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS for Responsive Layout -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Pacifico&display=swap" rel="stylesheet">
     
-    <!-- Aapki Custom CSS File Link -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* BACKGROUND COLOR FIX (Ab yeh hamesha Pink rahega) */
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            min-height: 100vh !important;
+            /* Zabardasti Pink Gradient lagaya hai */
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%) !important;
+            background-color: #ff758c !important;
+            font-family: 'Nunito', sans-serif !important;
+            color: #ffffff !important;
+            color-scheme: light !important;
+            forced-color-adjust: none !important;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .heading-font { font-family: 'Pacifico', cursive !important; }
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .screen.active { display: flex; animation: fadeIn 0.5s ease-in-out; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Floating Animation */
+        .float { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating { 0% { transform: translateY(0px); } 50% { transform: translateY(12px); } 100% { transform: translateY(0px); } }
+
+        /* KEYPAD FIXES */
+        .keypad-row {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 15px;
+        }
+        .keypad-btn {
+            width: 65px; height: 65px;
+            background: #ffffff !important;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; font-weight: 900; color: #ff758c !important;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+            cursor: pointer; user-select: none;
+            touch-action: manipulation;
+        }
+        .keypad-btn:active { transform: scale(0.9); }
+        .keypad-empty { background: transparent !important; box-shadow: none !important; color: transparent !important; }
+
+        /* PASSCODE DOTS FIX */
+        .passcode-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .passcode-dot {
+            width: 50px; height: 50px;
+            background: rgba(255,255,255,0.9) !important;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; font-weight: 900; color: #ff758c !important;
+        }
+
+        /* Buttons Fix */
+        .premium-btn {
+            background: rgba(255, 255, 255, 0.3) !important;
+            border: 2px solid white !important;
+            color: white !important;
+            font-weight: 900; font-size: 18px;
+            padding: 12px 30px; border-radius: 30px;
+            cursor: pointer; margin-top: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+
+        /* Styles for inner content */
+        .img-placeholder {
+            background-color: rgba(255,255,255,0.4);
+            object-fit: cover;
+        }
+        .polaroid { background: white !important; padding: 10px 10px 30px 10px; border-radius: 8px; transform: rotate(-3deg); margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .polaroid-right { transform: rotate(3deg); }
+        .polaroid-text { color: #ff758c !important; font-weight: bold; margin-top: 10px; font-size: 14px; }
+        .notepad {
+            background-color: #fff9c4 !important;
+            padding: 20px 20px 20px 30px;
+            border-radius: 8px;
+            color: #444 !important; font-weight: 800; font-size: 14px;
+            text-align: left; position: relative; margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .notepad::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: #ef5350 !important; }
+    </style>
 </head>
 <body>
 
     <!-- SCREEN 1: Passcode -->
     <div id="screen-1" class="screen active">
-        <h2 class="heading-font text-4xl text-white mb-6 drop-shadow-lg text-center">Enter Passcode</h2>
+        <h2 class="heading-font text-5xl mb-6 drop-shadow-md">Enter Passcode</h2>
         
-        <!-- YAHAN APNI PEHLI COUPLE PIC LAGAYEN -->
-        <img src="" alt="Pic 1" class="w-48 h-48 object-cover rounded-2xl border-[5px] border-white shadow-2xl mb-8 img-placeholder">
+        <img src="" alt="Pic 1" class="w-40 h-40 rounded-2xl border-4 border-white shadow-lg mb-8 img-placeholder mx-auto">
         
-        <div id="display" class="flex gap-3 mb-8">
-            <div class="w-14 h-14 bg-white/90 backdrop-blur-md rounded-xl shadow-inner flex items-center justify-center text-3xl font-black text-[#ff758c] passcode-dot"></div>
-            <div class="w-14 h-14 bg-white/90 backdrop-blur-md rounded-xl shadow-inner flex items-center justify-center text-3xl font-black text-[#ff758c] passcode-dot"></div>
-            <div class="w-14 h-14 bg-white/90 backdrop-blur-md rounded-xl shadow-inner flex items-center justify-center text-3xl font-black text-[#ff758c] passcode-dot"></div>
-            <div class="w-14 h-14 bg-white/90 backdrop-blur-md rounded-xl shadow-inner flex items-center justify-center text-3xl font-black text-[#ff758c] passcode-dot"></div>
+        <div class="passcode-container">
+            <div class="passcode-dot" id="dot-1"></div>
+            <div class="passcode-dot" id="dot-2"></div>
+            <div class="passcode-dot" id="dot-3"></div>
+            <div class="passcode-dot" id="dot-4"></div>
         </div>
 
-        <div class="grid grid-cols-3 gap-5 mb-6">
-            <div class="keypad-btn" onclick="pressKey('1')">1</div>
-            <div class="keypad-btn" onclick="pressKey('2')">2</div>
-            <div class="keypad-btn" onclick="pressKey('3')">3</div>
-            <div class="keypad-btn" onclick="pressKey('4')">4</div>
-            <div class="keypad-btn" onclick="pressKey('5')">5</div>
-            <div class="keypad-btn" onclick="pressKey('6')">6</div>
-            <div class="keypad-btn" onclick="pressKey('7')">7</div>
-            <div class="keypad-btn" onclick="pressKey('8')">8</div>
-            <div class="keypad-btn" onclick="pressKey('9')">9</div>
-            <div class="keypad-btn text-2xl text-red-500" onclick="clearKey()">⌫</div>
-            <div class="keypad-btn" onclick="pressKey('0')">0</div>
-            <div class="keypad-btn bg-transparent shadow-none border-none">
-                <!-- YAHAN CHOTA TEDDY ICON LAGAYEN -->
-                <img src="" alt="Teddy Icon" class="w-10 h-10 object-contain img-placeholder">
+        <div>
+            <div class="keypad-row">
+                <div class="keypad-btn" onclick="pressKey('1')">1</div>
+                <div class="keypad-btn" onclick="pressKey('2')">2</div>
+                <div class="keypad-btn" onclick="pressKey('3')">3</div>
+            </div>
+            <div class="keypad-row">
+                <div class="keypad-btn" onclick="pressKey('4')">4</div>
+                <div class="keypad-btn" onclick="pressKey('5')">5</div>
+                <div class="keypad-btn" onclick="pressKey('6')">6</div>
+            </div>
+            <div class="keypad-row">
+                <div class="keypad-btn" onclick="pressKey('7')">7</div>
+                <div class="keypad-btn" onclick="pressKey('8')">8</div>
+                <div class="keypad-btn" onclick="pressKey('9')">9</div>
+            </div>
+            <div class="keypad-row">
+                <div class="keypad-btn keypad-empty"></div>
+                <div class="keypad-btn" onclick="pressKey('0')">0</div>
+                <div class="keypad-btn" style="color: red !important; font-size: 22px;" onclick="clearKey()">⌫</div>
             </div>
         </div>
-        <p id="error-msg" class="text-white bg-red-500/80 px-4 py-2 rounded-full font-bold mb-2 hidden drop-shadow-md">Wrong Code! Try Again.</p>
         
-        <button id="next-btn-1" class="premium-btn hidden-element mt-4" onclick="nextScreen(2)">
-            Next 
-            <!-- YAHAN BHI TEDDY ICON LAGA SAKTE HAIN -->
-            <img src="" alt="Teddy" class="w-6 h-6 object-contain img-placeholder">
+        <p id="error-msg" class="bg-red-500 text-white px-4 py-2 rounded-full font-bold mt-4" style="display: none;">Wrong Code! Try Again</p>
+        
+        <button id="next-btn-1" class="premium-btn w-full max-w-[200px] mx-auto mt-6" style="display: none;" onclick="nextScreen(2)">
+            Next 🧸
         </button>
     </div>
 
     <!-- SCREEN 2: Intro -->
     <div id="screen-2" class="screen">
-        <h1 class="heading-font text-6xl text-white drop-shadow-xl mb-10 text-center">My Babby</h1>
+        <h1 class="heading-font text-6xl drop-shadow-lg mb-8">My Babby</h1>
         
-        <div class="relative w-72 h-72 mb-12 float">
-            <!-- YAHAN MAIN COUPLE PIC LAGAYEN -->
-            <img src="" alt="Pic 2" class="w-full h-full object-cover rounded-full border-[8px] border-white shadow-2xl img-placeholder">
-            
-            <!-- SIDE CARTOON STICKERS (CATS/STARS) -->
-            <img src="" alt="Cat 1" class="absolute top-0 -left-6 w-16 h-16 object-contain img-placeholder z-10">
-            <img src="" alt="Star" class="absolute bottom-0 -right-4 w-14 h-14 object-contain img-placeholder z-10">
-            <img src="" alt="Cat 2" class="absolute top-12 -right-10 w-16 h-16 object-contain img-placeholder z-10">
+        <div class="relative w-64 h-64 mb-8 float mx-auto">
+            <img src="" alt="Pic 2" class="w-full h-full object-cover rounded-full border-8 border-white shadow-xl img-placeholder">
         </div>
 
-        <div class="flex items-center gap-4 mb-8 cursor-pointer hover:scale-110 transition bg-white/20 p-3 rounded-full backdrop-blur-sm" onclick="nextScreen(3)">
-            <span class="text-2xl text-white font-extrabold drop-shadow-md pl-4">👈 Click Here</span>
-            <!-- BIRTHDAY CAT EMOJI KI JAGAH IMAGE -->
-            <img src="" alt="Birthday Cat" class="w-20 h-20 object-contain float img-placeholder">
+        <div class="flex items-center justify-center gap-4 mb-8 cursor-pointer bg-white/20 p-3 rounded-full" onclick="nextScreen(3)">
+            <span class="text-2xl font-extrabold">👈 Click Here</span>
+            <img src="" alt="Birthday Cat" class="w-16 h-16 float img-placeholder object-contain">
         </div>
         
-        <p class="text-xl text-[#ff758c] font-black bg-white px-8 py-4 rounded-3xl shadow-xl text-center">Today is your day to glow differently 🫶</p>
+        <p class="text-lg text-[#ff758c] font-black bg-white px-6 py-4 rounded-3xl shadow-xl">Today is your day to glow differently 🫶</p>
     </div>
 
     <!-- SCREEN 3: Surprise Prompt -->
     <div id="screen-3" class="screen">
-        <h2 class="heading-font text-5xl text-white mb-10 text-center drop-shadow-lg leading-tight">Ready for a small surprise?</h2>
+        <h2 class="heading-font text-5xl mb-10 drop-shadow-lg leading-tight">Ready for a small surprise?</h2>
         
-        <!-- YAHAN BOX MAIN SE NIKALTI CAT PIC LAGAYEN -->
-        <img src="" alt="Cat Box" class="w-72 h-72 object-contain float mb-12 img-placeholder drop-shadow-2xl">
+        <img src="" alt="Cat Box" class="w-64 h-64 float mb-10 img-placeholder object-contain mx-auto">
         
-        <div class="flex gap-6 w-full max-w-xs">
-            <button class="premium-btn flex-1 bg-green-500 !text-white !border-none text-xl shadow-[0_5px_15px_rgba(34,197,94,0.4)]" onclick="nextScreen(4)">Yes 😍</button>
-            <button id="no-btn" class="premium-btn flex-1 bg-red-500 !text-white !border-none text-xl shadow-[0_5px_15px_rgba(239,68,68,0.4)]" onclick="tryAgainAlert()">No 🥺</button>
+        <div class="flex justify-center gap-4 w-full">
+            <button class="premium-btn bg-green-500 border-none flex-1 max-w-[140px]" onclick="nextScreen(4)">Yes 😍</button>
+            <button id="no-btn" class="premium-btn bg-red-500 border-none flex-1 max-w-[140px] relative transition-all duration-300" onclick="tryAgainAlert()">No 🥺</button>
         </div>
-        <p id="try-again-msg" class="text-white font-bold text-2xl mt-8 bg-black/30 px-6 py-2 rounded-full hidden">Please try again 🥹</p>
+        <p id="try-again-msg" class="font-bold text-xl mt-6 bg-black/40 px-6 py-2 rounded-full" style="display: none;">Please try again 🥹</p>
     </div>
 
     <!-- SCREEN 4: Blow Candle -->
     <div id="screen-4" class="screen">
-        <h2 class="heading-font text-5xl text-white mb-10 drop-shadow-xl text-center">Hurry up maizu!</h2>
-        
-        <!-- YAHAN JALTI HUI CANDLES WALA CAKE LAGAYEN -->
-        <img src="" alt="Lit Cake" class="w-72 h-72 mb-12 float object-contain img-placeholder drop-shadow-2xl">
-        
-        <button class="premium-btn text-2xl px-10 py-4 bg-white/30" onclick="nextScreen(5)">Blow the candle 🕯️</button>
+        <h2 class="heading-font text-5xl mb-10 drop-shadow-xl">Hurry up maizu!</h2>
+        <img src="" alt="Lit Cake" class="w-64 h-64 mb-10 float img-placeholder object-contain mx-auto">
+        <button class="premium-btn text-xl px-10 py-3 mx-auto" onclick="nextScreen(5)">Blow the candle 🕯️</button>
     </div>
 
     <!-- SCREEN 5: Blown Candle & Flying Pics -->
-    <div id="screen-5" class="screen overflow-hidden">
-        <h2 class="heading-font text-5xl text-white mb-10 text-center drop-shadow-xl z-10">Happy Birthday my guriyeh</h2>
+    <div id="screen-5" class="screen">
+        <h2 class="heading-font text-4xl mb-10 drop-shadow-xl">Happy Birthday my guriyeh</h2>
         
-        <!-- YAHAN BUJHI HUI CANDLES WALA CAKE LAGAYEN -->
-        <img src="" alt="Unlit Cake" class="w-72 h-72 mb-10 z-10 object-contain img-placeholder relative drop-shadow-2xl">
-        
-        <!-- URHTI HUI SIDE PICTURES -->
-        <div class="float-up left-2 top-32 z-0">
-            <img src="" alt="Flying Pic 1" class="w-28 h-28 object-cover rounded-full border-[5px] border-white shadow-2xl img-placeholder">
-        </div>
-        <div class="float-up right-2 bottom-48 z-0" style="animation-delay: 1.5s;">
-            <img src="" alt="Flying Pic 2" class="w-24 h-24 object-cover rounded-full border-[5px] border-white shadow-2xl img-placeholder">
-        </div>
+        <img src="" alt="Unlit Cake" class="w-64 h-64 mb-10 img-placeholder object-contain mx-auto">
 
-        <button class="premium-btn mt-6 z-10 text-xl px-10" onclick="nextScreen(6)">Next ➡️</button>
+        <button class="premium-btn px-10 mx-auto" onclick="nextScreen(6)">Next ➡️</button>
     </div>
 
     <!-- SCREEN 6: Gift Choice -->
     <div id="screen-6" class="screen">
-        <h2 class="heading-font text-4xl text-white text-center mb-12 drop-shadow-xl leading-tight">These are for you!<br><span class="text-3xl opacity-90 mt-2 block font-sans font-bold">Choose one to open</span></h2>
+        <h2 class="heading-font text-4xl mb-12 drop-shadow-xl">These are for you!<br><span class="text-2xl font-sans font-bold block mt-2">Choose one to open</span></h2>
         
-        <!-- CORNER CAT STICKERS -->
-        <img src="" alt="Side Cat 1" class="absolute top-12 left-6 w-20 h-20 object-contain img-placeholder">
-        <img src="" alt="Side Cat 2" class="absolute top-24 right-6 w-20 h-20 object-contain img-placeholder">
-        
-        <div class="flex items-center justify-center gap-8 mt-10 w-full max-w-md">
-            <!-- CAMERA ICON (Cartoon) -->
-            <div class="cursor-pointer hover:scale-125 transition-transform duration-300 float bg-white/20 p-4 rounded-3xl backdrop-blur-sm" onclick="nextScreen(7)">
-                <img src="" alt="Camera Icon" class="w-24 h-24 object-contain img-placeholder">
+        <div class="flex items-center justify-center gap-6 mt-6">
+            <div class="cursor-pointer float bg-white/20 p-4 rounded-2xl" onclick="nextScreen(7)">
+                <img src="" alt="Camera Icon" class="w-20 h-20 img-placeholder object-contain">
             </div>
-            <!-- BOTTLE ICON (Cartoon) -->
-            <div class="cursor-pointer hover:scale-125 transition-transform duration-300 float bg-white/20 p-4 rounded-3xl backdrop-blur-sm" style="animation-delay: 0.4s;" onclick="nextScreen(8)">
-                <img src="" alt="Bottle Icon" class="w-20 h-24 object-contain img-placeholder">
+            <div class="cursor-pointer float bg-white/20 p-4 rounded-2xl" style="animation-delay: 0.5s;" onclick="nextScreen(8)">
+                <img src="" alt="Bottle Icon" class="w-16 h-20 img-placeholder object-contain">
             </div>
-            <!-- STAR ICON (Cartoon) -->
-            <div class="cursor-pointer hover:scale-125 transition-transform duration-300 float bg-white/20 p-4 rounded-3xl backdrop-blur-sm" style="animation-delay: 0.8s;" onclick="nextScreen(10)">
-                <img src="" alt="Star Icon" class="w-24 h-24 object-contain img-placeholder">
+            <div class="cursor-pointer float bg-white/20 p-4 rounded-2xl" style="animation-delay: 1s;" onclick="nextScreen(10)">
+                <img src="" alt="Star Icon" class="w-20 h-20 img-placeholder object-contain">
             </div>
         </div>
     </div>
 
-    <!-- SCREEN 7: Camera (Gallery) -->
-    <div id="screen-7" class="screen scrollable-screen">
-        <img src="" alt="Sticker" class="w-20 h-20 mt-6 object-contain img-placeholder mx-auto drop-shadow-md">
-
-        <div class="polaroid mt-6 w-[90%] max-w-[350px] mx-auto">
-            <!-- CAMERA SECTION PIC 1 -->
-            <img src="" alt="Polaroid Pic 1" class="w-full h-60 object-cover img-placeholder">
-            <div class="mt-4 font-black text-lg text-pink-600 bg-pink-50 p-3 rounded-lg transform rotate-1 border border-pink-200">
-                Your hugs are my favorite place ❤️🫂
-            </div>
+    <!-- SCREEN 7: Camera -->
+    <div id="screen-7" class="screen" style="justify-content: flex-start; overflow-y: auto;">
+        <div class="polaroid mt-8 w-full">
+            <img src="" alt="Gallery Pic 1" class="w-full h-56 img-placeholder">
+            <div class="polaroid-text bg-pink-100 p-2 rounded">Your hugs are my favorite place ❤️🫂</div>
         </div>
 
-        <div class="polaroid polaroid-right mt-8 w-[90%] max-w-[350px] mx-auto">
-            <!-- CAMERA SECTION PIC 2 -->
-            <img src="" alt="Polaroid Pic 2" class="w-full h-60 object-cover img-placeholder">
-            <div class="mt-4 font-black text-lg text-pink-600 bg-pink-50 p-3 rounded-lg transform -rotate-1 border border-pink-200">
-                Watching you grow is my favorite thing ❤️
-            </div>
+        <div class="polaroid polaroid-right w-full">
+            <img src="" alt="Gallery Pic 2" class="w-full h-56 img-placeholder">
+            <div class="polaroid-text bg-pink-100 p-2 rounded">Watching you grow is my favorite thing ❤️</div>
         </div>
 
-        <!-- CAMERA SECTION VIDEO -->
-        <div class="mt-10 w-[90%] max-w-[350px] mx-auto bg-black rounded-2xl overflow-hidden shadow-2xl border-[5px] border-white">
-            <video controls class="w-full h-56 object-cover">
+        <div class="w-full bg-black rounded-xl overflow-hidden border-4 border-white mt-4">
+            <video controls class="w-full h-48 object-cover">
                 <source src="" type="video/mp4">
-                Your browser does not support the video.
             </video>
         </div>
 
-        <button class="premium-btn mt-10 mb-12 mx-auto bg-white/40" onclick="nextScreen(6)">🔙 Back</button>
+        <button class="premium-btn mx-auto mt-8 mb-10" onclick="nextScreen(6)">🔙 Back</button>
     </div>
 
-    <!-- SCREEN 8: Bottle (Letter) -->
-    <div id="screen-8" class="screen scrollable-screen">
-        
-        <div class="flex justify-between w-full max-w-[400px] mt-8 mb-6 px-4 mx-auto">
-            <!-- BOTTLE SECTION: 2 SIDE PICS -->
-            <img src="" alt="Bottle Side Pic 1" class="w-28 h-28 object-cover rounded-full border-[5px] border-white shadow-xl transform -rotate-6 img-placeholder">
-            <img src="" alt="Bottle Side Pic 2" class="w-28 h-28 object-cover rounded-full border-[5px] border-white shadow-xl transform rotate-6 img-placeholder">
+    <!-- SCREEN 8: Bottle -->
+    <div id="screen-8" class="screen" style="justify-content: flex-start; overflow-y: auto;">
+        <div class="flex justify-between w-full mb-8 mt-6">
+            <img src="" alt="Side Pic 1" class="w-24 h-24 rounded-full border-4 border-white transform -rotate-6 img-placeholder">
+            <img src="" alt="Side Pic 2" class="w-24 h-24 rounded-full border-4 border-white transform rotate-6 img-placeholder">
         </div>
 
-        <div class="notepad w-[95%] max-w-[400px] mx-auto pl-10 text-[15px] sm:text-base text-gray-800">
-            Happiest birthday 🎁🎂 my bebo you bring so much joy into my life in ways I can’t even put into words. From the moment you came into this world, you filled our hearts with love, laughter, and a kind of happiness that only you could create. Watching you grow is like watching a beautiful little story 🫶🥹
+        <div class="notepad w-full">
+            Happiest birthday 🎁🎂 my bebo you bring so much joy into my life in ways I can’t even put into words. Watching you grow is like watching a beautiful little story 🫶🥹
         </div>
 
-        <!-- BOTTLE SECTION: CENTER BIG PIC -->
-        <img src="" alt="Bottle Center Pic" class="w-[85%] max-w-[300px] mt-10 mb-10 object-cover border-[6px] border-white rounded-xl shadow-2xl transform rotate-2 h-56 img-placeholder mx-auto">
+        <img src="" alt="Center Pic" class="w-4/5 h-48 object-cover border-4 border-white rounded-lg transform rotate-2 img-placeholder mx-auto my-6">
 
-        <div class="notepad w-[95%] max-w-[400px] mx-auto pl-10 text-[15px] sm:text-base text-gray-800 mb-10">
-            No matter how big you grow or where life takes you, you will always have a special place in my heart. I will always be here to cheer for you, guide you, and remind you just how amazing you are. You are my sunshine, my little blessing, and I love you more than words could ever express ❤️😽
+        <div class="notepad w-full">
+            No matter how big you grow, you will always have a special place in my heart. You are my sunshine, my little blessing, and I love you more than words could ever express ❤️😽
         </div>
 
-        <button class="premium-btn mb-12 mx-auto bg-white/40" onclick="nextScreen(6)">🔙 Back</button>
+        <button class="premium-btn mx-auto mb-10" onclick="nextScreen(6)">🔙 Back</button>
     </div>
 
-    <!-- SCREEN 10: Star (Final Video) -->
+    <!-- SCREEN 10: Final Video -->
     <div id="screen-10" class="screen">
-        <!-- BIRTHDAY SPECIAL STICKER/TEXT -->
-        <img src="" alt="Special Sticker" class="w-32 h-32 mb-8 object-contain float img-placeholder drop-shadow-xl">
+        <h2 class="heading-font text-4xl mb-8">Special Memory 🌟</h2>
         
-        <div class="w-full max-w-[350px] bg-white p-3 rounded-2xl shadow-2xl mb-10 border-4 border-pink-300">
-            <!-- YAHAN MAIN BIRTHDAY VIDEO LAGAYEN -->
+        <div class="w-full bg-white p-3 rounded-2xl shadow-xl mb-10 border-4 border-pink-300">
             <video controls autoplay class="w-full rounded-xl">
                 <source src="" type="video/mp4">
-                Your browser does not support the video.
             </video>
         </div>
 
-        <button class="premium-btn text-xl px-10 bg-white/30" onclick="nextScreen(6)">🔙 Back</button>
+        <button class="premium-btn mx-auto px-10" onclick="nextScreen(6)">🔙 Back</button>
     </div>
 
-    <!-- Aapki JS File Link -->
-    <script src="script.js"></script>
+    <!-- YEH HAI WOH JAVASCRIPT JO PEHLAY CUT HO GAYI THI -->
+    <script>
+        // Screen Navigation
+        function nextScreen(screenId) {
+            let screens = document.querySelectorAll('.screen');
+            for(let i = 0; i < screens.length; i++) {
+                screens[i].classList.remove('active');
+            }
+            document.getElementById('screen-' + screenId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Keypad Code Logic
+        let enteredCode = "";
+        let targetCode = "5210";
+
+        function updateDots() {
+            for(let i = 1; i <= 4; i++) {
+                let dot = document.getElementById('dot-' + i);
+                if(i <= enteredCode.length) {
+                    dot.innerText = enteredCode[i-1];
+                } else {
+                    dot.innerText = "";
+                }
+            }
+        }
+
+        function pressKey(num) {
+            document.getElementById('error-msg').style.display = 'none';
+            
+            if(enteredCode.length < 4) {
+                enteredCode += num;
+                updateDots();
+            }
+            
+            if(enteredCode.length === 4) {
+                if(enteredCode === targetCode) {
+                    // Code sahi hone par Next button show karega
+                    document.getElementById('next-btn-1').style.display = 'flex';
+                } else {
+                    // Galat code hone par Error show karega
+                    document.getElementById('error-msg').style.display = 'block';
+                    enteredCode = "";
+                    setTimeout(updateDots, 500);
+                }
+            }
+        }
+
+        function clearKey() {
+            if(enteredCode.length > 0) {
+                enteredCode = enteredCode.slice(0, -1);
+                updateDots();
+                document.getElementById('next-btn-1').style.display = 'none';
+            }
+        }
+
+        // 'No' Button Trick (Screen 3)
+        function tryAgainAlert() {
+            let msg = document.getElementById('try-again-msg');
+            msg.style.display = 'block';
+            
+            let noBtn = document.getElementById('no-btn');
+            let randomX = Math.floor(Math.random() * 100) - 50;
+            let randomY = Math.floor(Math.random() * 80) - 40;
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            
+            setTimeout(() => { 
+                msg.style.display = 'none'; 
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
