@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Surprise!</title>
+    <!-- Google Fonts for Premium Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Pacifico&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS for Responsive Layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Premium Styles & Animations */
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+        .heading-font { font-family: 'Pacifico', cursive; }
+        
+        .screen {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.6s ease-in-out;
+            position: relative;
+        }
+        .screen.active { display: flex; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Floating Animation for Stickers/Cakes */
+        .float { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating { 0% { transform: translate(0, 0px); } 50% { transform: translate(0, 15px); } 100% { transform: translate(0, -0px); } }
+
+        /* Floating Picture Animation (Screen 5) */
+        .float-up { animation: floatUp 4s ease-in-out infinite alternate; position: absolute; }
+        @keyframes floatUp { from { transform: translateY(50px) rotate(-5deg); } to { transform: translateY(-50px) rotate(5deg); } }
+
+        /* Polaroid Style */
+        .polaroid {
+            background: white;
+            padding: 10px 10px 40px 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-radius: 5px;
+            transform: rotate(-3deg);
+            margin: 15px;
+            text-align: center;
+            width: 100%;
+        }
+        .polaroid-right { transform: rotate(4deg); }
+
+        /* Notepad Style */
+        .notepad {
+            background-color: #fdf8c2;
+            background-image: repeating-linear-gradient(transparent, transparent 29px, #64b5f6 29px, #64b5f6 30px);
+            padding: 40px 20px 20px 20px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            line-height: 30px;
+            position: relative;
+            font-weight: 700;
+            color: #444;
+        }
+        .notepad::before {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; left: 30px;
+            width: 2px;
+            background-color: #ef5350;
+        }
+
+        /* Premium Buttons */
+        .premium-btn {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 2px solid white;
+            color: #d81b60;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 30px;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .premium-btn:hover { background: white; transform: scale(1.05); }
+
+        /* Keypad Styles */
+        .keypad-btn {
+            background: white; border-radius: 50%; width: 60px; height: 60px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; font-weight: bold; color: #d81b60;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s;
+        }
+        .keypad-btn:active { transform: scale(0.9); }
+
+        .hidden-element { visibility: hidden; opacity: 0; transition: 0.5s; }
+        .show-element { visibility: visible; opacity: 1; }
+
+        /* Yeh class khali images ko highlight karne ke liye hai taake apko andaza ho image kahan aayegi */
+        .img-placeholder {
+            background-color: rgba(255, 255, 255, 0.5);
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SCREEN 1: Passcode -->
+    <div id="screen-1" class="screen active">
+        <h2 class="heading-font text-3xl text-pink-600 mb-4 drop-shadow-md">Enter Passcode</h2>
+        
+        <!-- YAHAN APNI PEHLI COUPLE PIC LAGAYEN -->
+        <img src="" alt="Pic 1" class="w-48 h-48 object-cover rounded-2xl border-4 border-white shadow-lg mb-6 img-placeholder">
+        
+        <div id="display" class="flex gap-2 mb-6">
+            <div class="w-12 h-12 bg-white rounded-lg shadow-inner flex items-center justify-center text-2xl font-bold text-pink-500 passcode-dot"></div>
+            <div class="w-12 h-12 bg-white rounded-lg shadow-inner flex items-center justify-center text-2xl font-bold text-pink-500 passcode-dot"></div>
+            <div class="w-12 h-12 bg-white rounded-lg shadow-inner flex items-center justify-center text-2xl font-bold text-pink-500 passcode-dot"></div>
+            <div class="w-12 h-12 bg-white rounded-lg shadow-inner flex items-center justify-center text-2xl font-bold text-pink-500 passcode-dot"></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="keypad-btn" onclick="pressKey('1')">1</div>
+            <div class="keypad-btn" onclick="pressKey('2')">2</div>
+            <div class="keypad-btn" onclick="pressKey('3')">3</div>
+            <div class="keypad-btn" onclick="pressKey('4')">4</div>
+            <div class="keypad-btn" onclick="pressKey('5')">5</div>
+            <div class="keypad-btn" onclick="pressKey('6')">6</div>
+            <div class="keypad-btn" onclick="pressKey('7')">7</div>
+            <div class="keypad-btn" onclick="pressKey('8')">8</div>
+            <div class="keypad-btn" onclick="pressKey('9')">9</div>
+            <div class="keypad-btn text-xl" onclick="clearKey()">⌫</div>
+            <div class="keypad-btn" onclick="pressKey('0')">0</div>
+            <div class="keypad-btn">
+                <!-- YAHAN CHOTA TEDDY ICON LAGAYEN -->
+                <img src="" alt="Teddy Icon" class="w-8 h-8 object-contain img-placeholder">
+            </div>
+        </div>
+        <p id="error-msg" class="text-red-500 font-bold mb-2 hidden">Wrong Code!</p>
+        
+        <button id="next-btn-1" class="premium-btn hidden-element" onclick="nextScreen(2)">
+            Next 
+            <!-- YAHAN BHI TEDDY ICON LAGA SAKTE HAIN -->
+            <img src="" alt="Teddy" class="w-6 h-6 object-contain img-placeholder">
+        </button>
+    </div>
+
+    <!-- SCREEN 2: Intro -->
+    <div id="screen-2" class="screen">
+        <h1 class="heading-font text-5xl text-white drop-shadow-lg mb-8">My Babby</h1>
+        
+        <div class="relative w-64 h-64 mb-10 float">
+            <!-- YAHAN MAIN COUPLE PIC LAGAYEN -->
+            <img src="" alt="Pic 2" class="w-full h-full object-cover rounded-full border-8 border-white shadow-xl img-placeholder">
+            
+            <!-- SIDE CARTOON STICKERS (CATS/STARS) -->
+            <img src="" alt="Cat 1" class="absolute top-0 -left-5 w-14 h-14 object-contain img-placeholder">
+            <img src="" alt="Star" class="absolute bottom-0 -right-5 w-12 h-12 object-contain img-placeholder">
+            <img src="" alt="Cat 2" class="absolute top-10 -right-8 w-14 h-14 object-contain img-placeholder">
+        </div>
+
+        <div class="flex items-center gap-4 mb-6 cursor-pointer hover:scale-105 transition" onclick="nextScreen(3)">
+            <span class="text-3xl text-white font-bold drop-shadow-md">👈 Click Here</span>
+            <!-- BIRTHDAY CAT EMOJI KI JAGAH IMAGE -->
+            <img src="" alt="Birthday Cat" class="w-20 h-20 object-contain float img-placeholder">
+        </div>
+        <p class="text-xl text-white font-bold bg-pink-500/50 px-6 py-3 rounded-full backdrop-blur-sm text-center">Today is your day to glow differently 🫶</p>
+    </div>
+
+    <!-- SCREEN 3: Surprise Prompt -->
+    <div id="screen-3" class="screen">
+        <h2 class="heading-font text-4xl text-white mb-8 text-center drop-shadow-md">Ready for a small surprise?</h2>
+        
+        <!-- YAHAN BOX MAIN SE NIKALTI CAT PIC LAGAYEN -->
+        <img src="" alt="Cat Box" class="w-64 h-64 object-contain float mb-10 img-placeholder">
+        
+        <div class="flex gap-6">
+            <button class="premium-btn bg-green-400 text-white border-none text-xl" onclick="nextScreen(4)">Yes 😍</button>
+            <button id="no-btn" class="premium-btn bg-red-400 text-white border-none text-xl" onclick="tryAgainAlert()">No 🥺</button>
+        </div>
+        <p id="try-again-msg" class="text-white font-bold text-xl mt-4 hidden">Please try again 🥹</p>
+    </div>
+
+    <!-- SCREEN 4: Blow Candle -->
+    <div id="screen-4" class="screen">
+        <h2 class="heading-font text-4xl text-white mb-8 drop-shadow-md">Hurry up maizu!</h2>
+        
+        <!-- YAHAN JALTI HUI CANDLES WALA CAKE LAGAYEN -->
+        <img src="" alt="Lit Cake" class="w-64 h-64 mb-8 float object-contain img-placeholder">
+        
+        <button class="premium-btn text-2xl" onclick="nextScreen(5)">Blow the candle 🕯️</button>
+    </div>
+
+    <!-- SCREEN 5: Blown Candle & Flying Pics -->
+    <div id="screen-5" class="screen overflow-hidden">
+        <h2 class="heading-font text-4xl text-white mb-8 text-center drop-shadow-md z-10">Happy Birthday my guriyeh</h2>
+        
+        <!-- YAHAN BUJHI HUI CANDLES WALA CAKE LAGAYEN -->
+        <img src="" alt="Unlit Cake" class="w-64 h-64 mb-8 z-10 object-contain img-placeholder relative">
+        
+        <!-- URHTI HUI SIDE PICTURES -->
+        <div class="float-up left-4 top-20 z-0">
+            <img src="" alt="Flying Pic 1" class="w-24 h-24 object-cover rounded-full border-4 border-white shadow-lg img-placeholder">
+        </div>
+        <div class="float-up right-4 bottom-40 z-0" style="animation-delay: 1s;">
+            <img src="" alt="Flying Pic 2" class="w-20 h-20 object-cover rounded-full border-4 border-white shadow-lg img-placeholder">
+        </div>
+
+        <button class="premium-btn mt-4 z-10" onclick="nextScreen(6)">Next ➡️</button>
+    </div>
+
+    <!-- SCREEN 6: Gift Choice -->
+    <div id="screen-6" class="screen">
+        <h2 class="heading-font text-3xl text-white text-center mb-10 drop-shadow-md">These are for you!<br><span class="text-2xl">Choose one to open</span></h2>
+        
+        <!-- CORNER CAT STICKERS -->
+        <img src="" alt="Side Cat 1" class="absolute top-10 left-10 w-16 h-16 object-contain img-placeholder">
+        <img src="" alt="Side Cat 2" class="absolute top-20 right-10 w-16 h-16 object-contain img-placeholder">
+        
+        <div class="flex items-center justify-center gap-6 mt-8 w-full max-w-sm">
+            <!-- CAMERA ICON (Cartoon) -->
+            <div class="cursor-pointer hover:scale-110 transition float" onclick="nextScreen(7)">
+                <img src="" alt="Camera Icon" class="w-24 h-24 object-contain img-placeholder">
+            </div>
+            <!-- BOTTLE ICON (Cartoon) -->
+            <div class="cursor-pointer hover:scale-110 transition float" style="animation-delay: 0.5s;" onclick="nextScreen(8)">
+                <img src="" alt="Bottle Icon" class="w-20 h-24 object-contain img-placeholder">
+            </div>
+            <!-- STAR ICON (Cartoon) -->
+            <div class="cursor-pointer hover:scale-110 transition float" style="animation-delay: 1s;" onclick="nextScreen(10)">
+                <img src="" alt="Star Icon" class="w-24 h-24 object-contain img-placeholder">
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 7: Camera (Gallery) -->
+    <div id="screen-7" class="screen" style="justify-content: flex-start; overflow-y: auto;">
+        <!-- YAHAN BHI KOI CUTE STICKER LAGA SAKTE HAIN -->
+        <img src="" alt="Sticker" class="w-16 h-16 mt-5 object-contain img-placeholder">
+
+        <div class="polaroid mt-4">
+            <!-- CAMERA SECTION PIC 1 -->
+            <img src="" alt="Polaroid Pic 1" class="w-full h-48 object-cover img-placeholder">
+            <div class="mt-4 font-bold text-pink-600 bg-pink-100 p-2 rounded transform rotate-2">
+                Your hugs are my favorite place ❤️🫂
+            </div>
+        </div>
+
+        <div class="polaroid polaroid-right mt-6">
+            <!-- CAMERA SECTION PIC 2 -->
+            <img src="" alt="Polaroid Pic 2" class="w-full h-48 object-cover img-placeholder">
+            <div class="mt-4 font-bold text-pink-600 bg-pink-100 p-2 rounded transform -rotate-1 text-sm">
+                Watching you grow is my favorite thing ❤️
+            </div>
+        </div>
+
+        <!-- CAMERA SECTION VIDEO -->
+        <div class="mt-8 w-full bg-black rounded-lg overflow-hidden shadow-lg border-4 border-white">
+            <video controls class="w-full h-48 object-cover">
+                <source src="" type="video/mp4">
+                Your browser does not support the video.
+            </video>
+        </div>
+
+        <button class="premium-btn mt-8 mb-10" onclick="nextScreen(6)">🔙 Back</button>
+    </div>
+
+    <!-- SCREEN 8: Bottle (Letter) -->
+    <div id="screen-8" class="screen" style="justify-content: flex-start; overflow-y: auto;">
+        
+        <div class="flex justify-between w-full mt-4 mb-4 px-4">
+            <!-- BOTTLE SECTION: 2 SIDE PICS -->
+            <img src="" alt="Bottle Side Pic 1" class="w-24 h-24 object-cover rounded-full border-4 border-white shadow-md transform -rotate-6 img-placeholder">
+            <img src="" alt="Bottle Side Pic 2" class="w-24 h-24 object-cover rounded-full border-4 border-white shadow-md transform rotate-6 img-placeholder">
+        </div>
+
+        <div class="notepad w-full pl-10 text-sm md:text-base text-gray-700">
+            Happiest birthday 🎁🎂 my bebo you bring so much joy into my life in ways I can’t even put into words. From the moment you came into this world, you filled our hearts with love, laughter, and a kind of happiness that only you could create. Watching you grow is like watching a beautiful little story 🫶🥹
+        </div>
+
+        <!-- BOTTLE SECTION: CENTER BIG PIC -->
+        <img src="" alt="Bottle Center Pic" class="w-3/4 mt-8 mb-8 object-cover border-4 border-white rounded shadow-lg transform rotate-2 h-48 img-placeholder mx-auto">
+
+        <div class="notepad w-full pl-10 text-sm md:text-base text-gray-700 mb-8">
+            No matter how big you grow or where life takes you, you will always have a special place in my heart. I will always be here to cheer for you, guide you, and remind you just how amazing you are. You are my sunshine, my little blessing, and I love you more than words could ever express ❤️😽
+        </div>
+
+        <button class="premium-btn mb-10" onclick="nextScreen(6)">🔙 Back</button>
+    </div>
+
+    <!-- SCREEN 10: Star (Final Video) -->
+    <div id="screen-10" class="screen">
+        <!-- BITHDAY SPECIAL STICKER/TEXT -->
+        <img src="" alt="Special Sticker" class="w-24 h-24 mb-6 object-contain float img-placeholder">
+        
+        <div class="w-full max-w-md bg-white p-2 rounded-xl shadow-2xl mb-8 border-4 border-pink-200">
+            <!-- YAHAN MAIN BIRTHDAY VIDEO LAGAYEN -->
+            <video controls autoplay class="w-full rounded-lg">
+                <source src="" type="video/mp4">
+                Your browser does not support the video.
+            </video>
+        </div>
+
+        <button class="premium-btn" onclick="nextScreen(6)">🔙 Back</button>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Screen Navigation
+        function nextScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
+            });
+            document.getElementById('screen-' + screenId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // Keypad Logic (Code: 5210)
+        let enteredCode = "";
+        const targetCode = "5210";
+        const dots = document.querySelectorAll('.passcode-dot');
+
+        function updateDots() {
+            dots.forEach((dot, index) => {
+                if(index < enteredCode.length) {
+                    dot.innerText = enteredCode[index];
+                } else {
+                    dot.innerText = "";
+                }
+            });
+        }
+
+        function pressKey(num) {
+            document.getElementById('error-msg').classList.add('hidden');
+            if(enteredCode.length < 4) {
+                enteredCode += num;
+                updateDots();
+            }
+            if(enteredCode.length === 4) {
+                if(enteredCode === targetCode) {
+                    document.getElementById('next-btn-1').classList.remove('hidden-element');
+                    document.getElementById('next-btn-1').classList.add('show-element');
+                } else {
+                    document.getElementById('error-msg').classList.remove('hidden');
+                    enteredCode = "";
+                    setTimeout(updateDots, 500);
+                }
+            }
+        }
+
+        function clearKey() {
+            enteredCode = enteredCode.slice(0, -1);
+            updateDots();
+            document.getElementById('next-btn-1').classList.add('hidden-element');
+            document.getElementById('next-btn-1').classList.remove('show-element');
+        }
+
+        // NO Button Logic (Screen 3)
+        function tryAgainAlert() {
+            let msg = document.getElementById('try-again-msg');
+            msg.classList.remove('hidden');
+            let noBtn = document.getElementById('no-btn');
+            let randomX = Math.floor(Math.random() * 100) - 50;
+            let randomY = Math.floor(Math.random() * 100) - 50;
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            setTimeout(() => { msg.classList.add('hidden'); }, 2000);
+        }
+    </script>
+</body>
+</html>
